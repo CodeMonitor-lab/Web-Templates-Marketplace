@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "title": "Intelligent Automation Dashboard",
+    "category": "Enterprise AI Platform",
+    "description": "A scalable AI-powered workflow platform designed for startups and enterprise teams. Built with cloud-native architecture and real-time analytics.",
+    "image": "https://picsum.photos/seed/ai-dashboard/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["Next.js", "AI", "n8n", "Docker", "AWS"]
+  },
+  {
+    "id": 2,
+    "title": "AI Marketing Analytics",
+    "category": "SaaS Product",
+    "description": "Predictive analytics dashboard for modern marketing teams with AI-driven campaign optimization.",
+    "image": "https://picsum.photos/seed/marketing-ai/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["React", "OpenAI", "Node.js", "PostgreSQL"]
+  },
+  {
+    "id": 3,
+    "title": "Cloud DevOps Monitor",
+    "category": "Developer Tooling",
+    "description": "Real-time cloud monitoring and CI/CD performance tracking for enterprise DevOps teams.",
+    "image": "https://picsum.photos/seed/devops-monitor/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["Next.js", "Docker", "Kubernetes", "AWS"]
+  },
+  {
+    "id": 4,
+    "title": "AI Customer Support Bot",
+    "category": "AI Automation",
+    "description": "AI-powered conversational support system integrated with CRM and ticketing platforms for 24/7 automation.",
+    "image": "https://picsum.photos/seed/ai-support/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["OpenAI", "Node.js", "Webhook", "n8n"]
+  },
+  {
+    "id": 5,
+    "title": "FinTech Analytics Platform",
+    "category": "Enterprise SaaS",
+    "description": "Secure financial analytics system with AI forecasting, real-time dashboards, and multi-tenant architecture.",
+    "image": "https://picsum.photos/seed/fintech-ai/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["Next.js", "TypeScript", "PostgreSQL", "AWS"]
+  },
+  {
+    "id": 6,
+    "title": "AI Workflow Builder",
+    "category": "Automation Tool",
+    "description": "Drag-and-drop automation builder for internal business operations powered by AI logic engines.",
+    "image": "https://picsum.photos/seed/workflow-builder/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["React", "n8n", "OpenAI", "MongoDB"]
+  },
+  {
+    "id": 7,
+    "title": "Cloud Infrastructure Manager",
+    "category": "DevOps Platform",
+    "description": "Infrastructure automation and deployment manager with CI/CD pipelines and Docker orchestration.",
+    "image": "https://picsum.photos/seed/cloud-manager/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["Docker", "CI/CD", "AWS", "Kubernetes"]
+  },
+  {
+    "id": 8,
+    "title": "AI Lead Generation System",
+    "category": "Growth Automation",
+    "description": "Automated lead capture, scoring, and outreach system powered by AI and workflow automation.",
+    "image": "https://picsum.photos/seed/lead-generation/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["Next.js", "OpenAI", "Webhook", "PostgreSQL"]
+  },
+  {
+    "id": 9,
+    "title": "Real-Time Data Intelligence Hub",
+    "category": "Analytics Platform",
+    "description": "Enterprise-grade data visualization and AI-driven insights platform with scalable API integrations.",
+    "image": "https://picsum.photos/seed/data-intelligence/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["Next.js", "GraphQL", "AI", "AWS"]
+  },
+  {
+    "id": 10,
+    "title": "AI Content Generation Suite",
+    "category": "AI SaaS",
+    "description": "AI-powered content automation platform for blogs, marketing copy, and social media generation.",
+    "image": "https://picsum.photos/seed/content-ai/1200/800",
+    "liveUrl": "#",
+    "caseStudyUrl": "#",
+    "tech": ["React", "OpenAI", "Node.js", "Vercel"]
+  }
+]

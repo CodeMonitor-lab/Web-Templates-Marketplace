@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "title": "E-Commerce Platform",
+    "description": "Full-stack store with Stripe payments, product management, and admin dashboard.",
+    "image": "https://picsum.photos/seed/ecommerce/600/400",
+    "tags": ["React", "Next.js", "Stripe", "MongoDB"],
+    "category": "Web App",
+    "featured": true,
+    "liveUrl": "https://ecommerce-demo.com",
+    "githubUrl": "https://github.com/username/ecommerce"
+  },
+  {
+    "id": 2,
+    "title": "SaaS Dashboard",
+    "description": "Analytics dashboard with real-time charts and authentication system.",
+    "image": "https://picsum.photos/seed/saas-dashboard/600/400",
+    "tags": ["TypeScript", "Tailwind", "Shadcn", "Recharts"],
+    "category": "SaaS",
+    "featured": true,
+    "liveUrl": "https://saas-dashboard.com",
+    "githubUrl": "https://github.com/username/saas-dashboard"
+  },
+  {
+    "id": 3,
+    "title": "Portfolio Website",
+    "description": "Modern animated developer portfolio with dark mode and smooth transitions.",
+    "image": "https://picsum.photos/seed/portfolio/600/400",
+    "tags": ["React", "Framer Motion", "Tailwind"],
+    "category": "Portfolio",
+    "featured": false,
+    "liveUrl": "https://portfolio-demo.com",
+    "githubUrl": "https://github.com/username/portfolio"
+  },
+  {
+    "id": 4,
+    "title": "AI Chat Application",
+    "description": "Real-time AI chatbot with streaming responses and conversation history.",
+    "image": "https://picsum.photos/seed/ai-chat/600/400",
+    "tags": ["Next.js", "OpenAI", "WebSockets"],
+    "category": "AI",
+    "featured": true,
+    "liveUrl": "https://ai-chat-demo.com",
+    "githubUrl": "https://github.com/username/ai-chat"
+  },
+  {
+    "id": 5,
+    "title": "Task Management App",
+    "description": "Drag-and-drop kanban board for managing team tasks efficiently.",
+    "image": "https://picsum.photos/seed/task-manager/600/400",
+    "tags": ["React", "Dnd Kit", "Node.js"],
+    "category": "Productivity",
+    "featured": false,
+    "liveUrl": "https://task-manager-demo.com",
+    "githubUrl": "https://github.com/username/task-manager"
+  },
+  {
+    "id": 6,
+    "title": "Real Estate Platform",
+    "description": "Property listing website with advanced filters and interactive maps.",
+    "image": "https://picsum.photos/seed/real-estate/600/400",
+    "tags": ["Next.js", "Google Maps API", "Prisma"],
+    "category": "Marketplace",
+    "featured": false,
+    "liveUrl": "https://realestate-demo.com",
+    "githubUrl": "https://github.com/username/realestate"
+  },
+  {
+    "id": 7,
+    "title": "Fitness Tracker App",
+    "description": "Track workouts, calories, and performance with interactive charts.",
+    "image": "https://picsum.photos/seed/fitness/600/400",
+    "tags": ["React Native", "Firebase"],
+    "category": "Mobile",
+    "featured": false,
+    "liveUrl": "https://fitness-demo.com",
+    "githubUrl": "https://github.com/username/fitness-app"
+  },
+  {
+    "id": 8,
+    "title": "Blog CMS Platform",
+    "description": "Custom headless CMS with markdown support and role-based access.",
+    "image": "https://picsum.photos/seed/blog-cms/600/400",
+    "tags": ["Next.js", "PostgreSQL", "Prisma"],
+    "category": "CMS",
+    "featured": false,
+    "liveUrl": "https://blogcms-demo.com",
+    "githubUrl": "https://github.com/username/blog-cms"
+  }
+]

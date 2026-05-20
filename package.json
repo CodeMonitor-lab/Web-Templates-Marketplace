@@ -1,0 +1,37 @@
+{
+  "name": "web-templates-marketplace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "format": "turbo format",
+    "clean": "turbo clean",
+
+    "dev:web": "pnpm --filter web dev",
+    "dev:admin": "pnpm --filter admin dev",
+    "dev:api": "pnpm --filter api dev",
+
+    "build:web": "pnpm --filter web build",
+    "build:admin": "pnpm --filter admin build",
+    "build:api": "pnpm --filter api build",
+
+    "lint:admin": "pnpm --filter web lint",
+    "lint:web": "pnpm --filter admin lint",
+    "lint:api": "pnpm --filter api lint",
+
+    "dev:all": "concurrently -k -n WEB,ADMIN,API -c blue,green,yellow \"pnpm dev:web\" \"pnpm dev:admin\" \"pnpm dev:api\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.25.0",
+  "dependencies": {
+    "concurrently": "^9.2.1",
+    "turbo": "^2.9.14"
+  }
+}

@@ -1,0 +1,29 @@
+[
+    {
+      "title": "Startups",
+      "description": "Quickly launch and validate ideas without heavy infrastructure.",
+      "points": [
+        "Fast MVP development",
+        "Low cost scaling",
+        "Quick iteration"
+      ]
+    },
+    {
+      "title": "Agencies",
+      "description": "Manage multiple clients efficiently from one platform.",
+      "points": [
+        "Client dashboards",
+        "Team collaboration",
+        "White-label solutions"
+      ]
+    },
+    {
+      "title": "Developers",
+      "description": "Build and ship faster with ready-made tools.",
+      "points": [
+        "Reusable components",
+        "API integrations",
+        "Automation tools"
+      ]
+    }
+  ]

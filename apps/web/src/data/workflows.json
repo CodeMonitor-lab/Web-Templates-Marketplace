@@ -1,0 +1,22 @@
+[
+    {
+      "name": "User Signup Flow",
+      "description": "Handles new user registration and onboarding.",
+      "steps": [
+        { "title": "User Signs Up", "type": "trigger" },
+        { "title": "Create Account", "type": "process" },
+        { "title": "Send Welcome Email", "type": "action" },
+        { "title": "Show Dashboard", "type": "result" }
+      ]
+    },
+    {
+      "name": "Payment Workflow",
+      "description": "Automates subscription payments.",
+      "steps": [
+        { "title": "User Subscribes", "type": "trigger" },
+        { "title": "Process Payment", "type": "process" },
+        { "title": "Generate Invoice", "type": "action" },
+        { "title": "Activate Plan", "type": "result" }
+      ]
+    }
+  ]

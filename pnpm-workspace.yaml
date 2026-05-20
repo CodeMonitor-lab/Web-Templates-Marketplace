@@ -1,0 +1,10 @@
+packages:
+  - apps/web
+  - apps/admin
+  - apps/api
+  - services/*
+
+ignoredBuiltDependencies:
+  - msw
+  - sharp
+  - unrs-resolver

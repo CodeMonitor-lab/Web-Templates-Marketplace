@@ -1,0 +1,22 @@
+# dependencies
+node_modules
+
+# next
+.next
+.next/cache
+# build
+dist
+out
+
+# turbo
+.turbo
+
+# env
+.env
+.env.production
+
+# logs
+*.log
+
+# OS
+.DS_Store

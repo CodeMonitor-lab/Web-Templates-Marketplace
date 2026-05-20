@@ -1,0 +1,32 @@
+[
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "description": "Create your account and set up your workspace.",
+      "items": ["Sign up", "Verify email", "Access dashboard"]
+    },
+    {
+      "id": "features",
+      "title": "Core Features",
+      "description": "Explore what you can do with the platform.",
+      "items": ["Projects", "Automation", "Analytics"]
+    },
+    {
+      "id": "integrations",
+      "title": "Integrations",
+      "description": "Connect with your favorite tools.",
+      "items": ["Slack", "Stripe", "Zapier"]
+    },
+    {
+      "id": "billing",
+      "title": "Billing",
+      "description": "Manage your subscription and payments.",
+      "items": ["Upgrade plan", "View invoices", "Update payment"]
+    },
+    {
+      "id": "api",
+      "title": "API",
+      "description": "Integrate programmatically using our API.",
+      "items": ["Authentication", "Endpoints", "Examples"]
+    }
+  ]

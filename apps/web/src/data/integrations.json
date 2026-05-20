@@ -1,0 +1,22 @@
+[
+    {
+      "name": "Slack",
+      "description": "Get real-time notifications and updates.",
+      "status": "disconnected"
+    },
+    {
+      "name": "Stripe",
+      "description": "Handle payments and subscriptions.",
+      "status": "connected"
+    },
+    {
+      "name": "Google Analytics",
+      "description": "Track user behavior and analytics.",
+      "status": "disconnected"
+    },
+    {
+      "name": "Zapier",
+      "description": "Automate workflows with 1000+ apps.",
+      "status": "connected"
+    }
+  ]

@@ -1,0 +1,39 @@
+[
+    {
+      "title": "Getting Started",
+      "items": [
+        { "label": "Introduction", "id": "introduction" },
+        { "label": "Installation", "id": "installation" },
+        { "label": "Quick Start", "id": "quick-start" },
+        { "label": "Project Structure", "id": "project-structure" }
+      ]
+    },
+    {
+      "title": "Guides",
+      "items": [
+        { "label": "Routing", "id": "routing" },
+        { "label": "State Management", "id": "state-management" },
+        { "label": "Styling", "id": "styling" },
+        { "label": "Authentication", "id": "authentication" },
+        { "label": "Deployment", "id": "deployment" }
+      ]
+    },
+    {
+      "title": "API Reference",
+      "items": [
+        { "label": "Components", "id": "components" },
+        { "label": "Hooks", "id": "hooks" },
+        { "label": "Utilities", "id": "utilities" },
+        { "label": "Config", "id": "config" }
+      ]
+    },
+    {
+      "title": "Advanced",
+      "items": [
+        { "label": "Performance", "id": "performance" },
+        { "label": "Security", "id": "security" },
+        { "label": "Scaling", "id": "scaling" },
+        { "label": "Monitoring", "id": "monitoring" }
+      ]
+    }
+  ]

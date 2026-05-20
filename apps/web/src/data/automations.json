@@ -1,0 +1,29 @@
+[
+    {
+      "title": "User Onboarding",
+      "description": "Automatically onboard new users with guided steps.",
+      "steps": [
+        "Send welcome email",
+        "Create user workspace",
+        "Trigger onboarding checklist"
+      ]
+    },
+    {
+      "title": "Lead Capture",
+      "description": "Capture and nurture leads automatically.",
+      "steps": [
+        "Collect form data",
+        "Store in database",
+        "Send follow-up email"
+      ]
+    },
+    {
+      "title": "Subscription Billing",
+      "description": "Automate payments and billing cycles.",
+      "steps": [
+        "Start subscription",
+        "Process payment",
+        "Send invoice"
+      ]
+    }
+  ]

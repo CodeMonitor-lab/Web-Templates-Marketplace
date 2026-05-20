@@ -1,0 +1,57 @@
+[
+    {
+      "id": 1,
+      "title": "E-commerce",
+      "slug": "e-commerce",
+      "count": 12
+    },
+    {
+      "id": 2,
+      "title": "Blog",
+      "slug": "blog",
+      "count": 8
+    },
+    {
+      "id": 3,
+      "title": "Portfolio",
+      "slug": "portfolio",
+      "count": 15
+    },
+    {
+      "id": 4,
+      "title": "Landing Pages",
+      "slug": "landing-pages",
+      "count": 6
+    },
+    {
+      "id": 5,
+      "title": "SaaS Apps",
+      "slug": "saas-apps",
+      "count": 9
+    },
+    {
+      "id": 6,
+      "title": "Web Tools",
+      "slug": "web-tools",
+      "count": 7
+    },
+    {
+      "id": 7,
+      "title": "Mobile Apps",
+      "slug": "mobile-apps",
+      "count": 10
+    },
+    {
+      "id": 8,
+      "title": "Dashboards",
+      "slug": "dashboards",
+      "count": 5
+    },
+    {
+      "id": 9,
+      "title": "API Integrations",
+      "slug": "api-integrations",
+      "count": 4
+    }
+  ]
+  

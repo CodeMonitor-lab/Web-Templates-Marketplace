@@ -1,0 +1,38 @@
+[
+    {
+      "title": "Fast Performance",
+      "description": "Optimized for speed and efficiency.",
+      "details": [
+        "Lightning-fast load times",
+        "Optimized API calls",
+        "Minimal resource usage"
+      ]
+    },
+    {
+      "title": "Automation",
+      "description": "Automate repetitive workflows easily.",
+      "details": [
+        "Trigger-based actions",
+        "Scheduled tasks",
+        "Custom workflows"
+      ]
+    },
+    {
+      "title": "Analytics",
+      "description": "Track performance and user behavior.",
+      "details": [
+        "Real-time insights",
+        "Custom dashboards",
+        "Export reports"
+      ]
+    },
+    {
+      "title": "Security",
+      "description": "Enterprise-grade security for your data.",
+      "details": [
+        "Data encryption",
+        "Secure authentication",
+        "Access control"
+      ]
+    }
+  ]

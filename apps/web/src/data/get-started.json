@@ -1,0 +1,42 @@
+[
+    {
+      "id": 1,
+      "title": "Create Your Account",
+      "description": "Sign up and set up your workspace in minutes.",
+      "steps": [
+        "Enter your email and password",
+        "Verify your email",
+        "Set up your workspace"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Connect Your Tools",
+      "description": "Integrate your favorite apps and services.",
+      "steps": [
+        "Choose integrations (Slack, Stripe, etc.)",
+        "Authorize access",
+        "Test connection"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Build Your First Workflow",
+      "description": "Automate tasks and processes easily.",
+      "steps": [
+        "Select trigger",
+        "Add actions",
+        "Run your workflow"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Launch & Scale",
+      "description": "Deploy and monitor your system.",
+      "steps": [
+        "Activate automation",
+        "Track analytics",
+        "Optimize performance"
+      ]
+    }
+  ]
