@@ -23,21 +23,22 @@
   "_moduleAliases": {
     "@": "src"
   },
-  "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon src/server.js",
-    "start": "cross-env NODE_ENV=production node src/server.js",
-    "start:prod": "pnpm start",
-    "lint": "eslint src --fix",
-    "lint:check": "eslint src",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "test": "node --test",
-    "test:watch": "node --test --watch",
-    "clean": "rm -rf node_modules .turbo",
-    "prune": "pnpm store prune",
-    "deps:check": "pnpm dlx depcheck",
-    "deps:update": "pnpm update --latest"
-  },
+"scripts": {
+  "build": "echo 'API build completed'",
+  "dev": "cross-env NODE_ENV=development nodemon src/server.js",
+  "start": "cross-env NODE_ENV=production node src/server.js",
+  "start:prod": "pnpm start",
+  "lint": "eslint src --fix",
+  "lint:check": "eslint src",
+  "format": "prettier --write .",
+  "format:check": "prettier --check .",
+  "test": "node --test",
+  "test:watch": "node --test --watch",
+  "clean": "rm -rf node_modules .turbo",
+  "prune": "pnpm store prune",
+  "deps:check": "pnpm dlx depcheck",
+  "deps:update": "pnpm update --latest"
+},
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "compression": "^1.8.1",
