@@ -1,8 +1,5 @@
 packages:
-  - apps/web
-  - apps/admin
-  - apps/api
-  - services/*
+  - apps/*
   - packages/*
 
 ignoredBuiltDependencies:
