@@ -1,21 +1,75 @@
 {
-  "name": "api",
+  "name": "@backend/api",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/app.js",
-  "scripts": {
-    "dev": "nodemon src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "private": true,
+  "description": "Production-grade modular Express API for template marketplace",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "license": "UNLICENSED",
+  "keywords": [
+    "express",
+    "nodejs",
+    "marketplace",
+    "backend",
+    "api",
+    "templates",
+    "saas"
+  ],
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.25.0",
+  "engineStrict": true,
+  "_moduleAliases": {
+    "@": "src"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon src/server.js",
+    "start": "cross-env NODE_ENV=production node src/server.js",
+    "start:prod": "pnpm start",
+    "lint": "eslint src --fix",
+    "lint:check": "eslint src",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test",
+    "test:watch": "node --test --watch",
+    "clean": "rm -rf node_modules .turbo",
+    "prune": "pnpm store prune",
+    "deps:check": "pnpm dlx depcheck",
+    "deps:update": "pnpm update --latest"
+  },
   "dependencies": {
-    "body-parser": "^2.2.2",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
+    "bcryptjs": "^3.0.2",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "envalid": "^8.1.1",
     "express": "^5.2.1",
-    "nodemon": "^3.1.14"
-  }
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.1.0",
+    "hpp": "^0.2.3",
+    "joi": "^18.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
+    "mongoose": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.2",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^14.0.0",
+    "winston": "^3.19.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^16.4.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
+  },
+  "packageManager": "pnpm@10"
 }

@@ -3,6 +3,7 @@ packages:
   - apps/admin
   - apps/api
   - services/*
+  - packages/*
 
 ignoredBuiltDependencies:
   - msw
