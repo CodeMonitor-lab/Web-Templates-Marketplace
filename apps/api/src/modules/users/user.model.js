@@ -1,3 +1,5 @@
+// src/modules/users/user.model.js
+
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
@@ -19,26 +21,21 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6,
-    },
-
-    avatar: {
-      type: String,
-      default: "",
+      select: false,
     },
 
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: ["USER", "SELLER", "ADMIN"],
+      default: "USER",
+    },
+
+    avatar: {
+      type: String,
+      default: null,
     },
 
     isVerified: {
-      type: Boolean,
-      default: false,
-    },
-
-    isBlocked: {
       type: Boolean,
       default: false,
     },
@@ -48,6 +45,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+module.exports =
+  mongoose.models.User ||
+  mongoose.model("User", userSchema);

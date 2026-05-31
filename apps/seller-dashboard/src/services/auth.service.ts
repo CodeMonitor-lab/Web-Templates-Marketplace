@@ -1,45 +1,76 @@
+// src/services/auth.service.ts
+
 import api from "@/lib/api/axios";
 import API_ENDPOINTS from "@/lib/api/endpoints";
 
-const authService = {
-  async login(data: { email: string; password: string }) {
-    const res = await api.post(API_ENDPOINTS.AUTH.LOGIN, data);
+type LoginPayload = {
+  email: string;
+  password: string;
+};
 
-    const { token } = res.data;
+type RegisterPayload = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+const authService = {
+  async login(data: LoginPayload) {
+    const res = await api.post(
+      API_ENDPOINTS.AUTH.LOGIN,
+      data
+    );
+
+    const { token, user } = res.data;
 
     if (token) {
-      localStorage.setItem("token", token);
+      localStorage.setItem(
+        "accessToken",
+        token
+      );
     }
 
-    return res.data;
+    return user;
   },
 
-  async register(data: {
-    name: string;
-    email: string;
-    password: string;
-  }) {
-    const res = await api.post(API_ENDPOINTS.AUTH.REGISTER, data);
+  async register(
+    data: RegisterPayload
+  ) {
+    const res = await api.post(
+      API_ENDPOINTS.AUTH.REGISTER,
+      data
+    );
 
-    const { token } = res.data;
+    const { token, user } = res.data;
 
     if (token) {
-      localStorage.setItem("token", token);
+      localStorage.setItem(
+        "accessToken",
+        token
+      );
     }
 
-    return res.data;
+    return user;
   },
 
   async logout() {
-    localStorage.removeItem("token");
-
-    await api.post(API_ENDPOINTS.AUTH.LOGOUT);
+    try {
+      await api.post(
+        API_ENDPOINTS.AUTH.LOGOUT
+      );
+    } finally {
+      localStorage.removeItem(
+        "accessToken"
+      );
+    }
   },
 
   async getCurrentUser() {
-    const res = await api.get(API_ENDPOINTS.AUTH.ME);
+    const res = await api.get(
+      API_ENDPOINTS.USERS.PROFILE
+    );
 
-    return res.data;
+    return res.data.data;
   },
 };
 

@@ -11,24 +11,14 @@ const NotFoundError = require("../../shared/errors/NotFoundError");
 |--------------------------------------------------------------------------
 */
 const createUser = async (payload) => {
-  const { name, email, password } = payload;
-
-  // Required fields validation
-  if (!name || !email || !password) {
-    throw new ValidationError(
-      "Name, email and password are required"
-    );
-  }
-
-  // Check existing email
-  const existingUser = await userRepository.findByEmail(email);
+  const existingUser =
+    await userRepository.findByEmail(payload.email);
 
   if (existingUser) {
     throw new ValidationError("Email already exists");
   }
 
-  // Create user
-  return await userRepository.create(payload);
+  return userRepository.create(payload);
 };
 
 /*
@@ -58,11 +48,9 @@ const updateProfile = async (userId, payload) => {
     throw new NotFoundError("User not found");
   }
 
-  // Prevent duplicate email update
   if (payload.email) {
-    const existingUser = await userRepository.findByEmail(
-      payload.email
-    );
+    const existingUser =
+      await userRepository.findByEmail(payload.email);
 
     if (
       existingUser &&
@@ -72,7 +60,10 @@ const updateProfile = async (userId, payload) => {
     }
   }
 
-  return await userRepository.updateById(userId, payload);
+  return userRepository.updateById(
+    userId,
+    payload
+  );
 };
 
 /*
@@ -81,7 +72,7 @@ const updateProfile = async (userId, payload) => {
 |--------------------------------------------------------------------------
 */
 const getAllUsers = async () => {
-  return await userRepository.findAll();
+  return userRepository.findAll();
 };
 
 /*
@@ -111,7 +102,9 @@ const deleteUser = async (userId) => {
     throw new NotFoundError("User not found");
   }
 
-  return await userRepository.deleteById(userId);
+  await userRepository.deleteById(userId);
+
+  return true;
 };
 
 module.exports = {

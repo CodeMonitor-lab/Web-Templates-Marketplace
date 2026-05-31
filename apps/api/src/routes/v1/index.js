@@ -10,10 +10,16 @@ const router = express.Router();
 |--------------------------------------------------------------------------
 */
 const {
+  authRoutes,
+} = require("../../modules/auth");
+
+const {
+  userRoutes,
+} = require("../../modules/users");
+
+const {
   templateRoutes,
 } = require("../../modules/templates");
-
-const userRoutes = require("../../modules/users/user.routes");
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +32,13 @@ router.get("/", (req, res) => {
     message: "API V1 working successfully 🚀",
   });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Auth Routes
+|--------------------------------------------------------------------------
+*/
+router.use("/auth", authRoutes);
 
 /*
 |--------------------------------------------------------------------------

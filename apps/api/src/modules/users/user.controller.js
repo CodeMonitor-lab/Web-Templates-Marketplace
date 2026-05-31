@@ -1,8 +1,8 @@
 // src/modules/users/user.controller.js
 
 const userService = require("./user.service");
+const userMapper = require("./user.mapper");
 const asyncHandler = require("../../common/middleware/asyncHandler");
-const ValidationError = require("../../shared/errors/ValidationError");
 
 /*
 |--------------------------------------------------------------------------
@@ -10,20 +10,12 @@ const ValidationError = require("../../shared/errors/ValidationError");
 |--------------------------------------------------------------------------
 */
 const createUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
-
-  if (!name || !email || !password) {
-    throw new ValidationError(
-      "Name, email and password are required"
-    );
-  }
-
   const user = await userService.createUser(req.body);
 
   return res.status(201).json({
     success: true,
     message: "User created successfully",
-    data: user,
+    data: userMapper.toPublic(user),
   });
 });
 
@@ -33,15 +25,11 @@ const createUser = asyncHandler(async (req, res) => {
 |--------------------------------------------------------------------------
 */
 const getProfile = asyncHandler(async (req, res) => {
-  if (!req.user?.id) {
-    throw new ValidationError("User ID is missing");
-  }
-
   const user = await userService.getProfile(req.user.id);
 
   return res.status(200).json({
     success: true,
-    data: user,
+    data: userMapper.toPublic(user),
   });
 });
 
@@ -51,10 +39,6 @@ const getProfile = asyncHandler(async (req, res) => {
 |--------------------------------------------------------------------------
 */
 const updateProfile = asyncHandler(async (req, res) => {
-  if (!req.user?.id) {
-    throw new ValidationError("User ID is missing");
-  }
-
   const updatedUser = await userService.updateProfile(
     req.user.id,
     req.body
@@ -63,7 +47,7 @@ const updateProfile = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
     message: "Profile updated successfully",
-    data: updatedUser,
+    data: userMapper.toPublic(updatedUser),
   });
 });
 
@@ -78,7 +62,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
     count: users.length,
-    data: users,
+    data: userMapper.toList(users),
   });
 });
 
@@ -88,17 +72,11 @@ const getAllUsers = asyncHandler(async (req, res) => {
 |--------------------------------------------------------------------------
 */
 const getUserById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  if (!id) {
-    throw new ValidationError("User ID is required");
-  }
-
-  const user = await userService.getUserById(id);
+  const user = await userService.getUserById(req.params.id);
 
   return res.status(200).json({
     success: true,
-    data: user,
+    data: userMapper.toPublic(user),
   });
 });
 
@@ -108,13 +86,7 @@ const getUserById = asyncHandler(async (req, res) => {
 |--------------------------------------------------------------------------
 */
 const deleteUser = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  if (!id) {
-    throw new ValidationError("User ID is required");
-  }
-
-  await userService.deleteUser(id);
+  await userService.deleteUser(req.params.id);
 
   return res.status(200).json({
     success: true,

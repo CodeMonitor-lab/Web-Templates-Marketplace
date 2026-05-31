@@ -1,32 +1,45 @@
-// user.middleware.js
+// src/common/middleware/auth.js
 
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const userMiddleware = (req, res, next) => {
+const UnauthorizedError = require(
+  "../../shared/errors/UnauthorizedError"
+);
+
+const auth = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authorization token missing',
-      });
+    if (
+      !authHeader ||
+      !authHeader.startsWith("Bearer ")
+    ) {
+      throw new UnauthorizedError(
+        "Access token required"
+      );
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
 
-    req.user = decoded;
+    req.user = {
+      id: decoded.id,
+      email: decoded.email,
+      role: decoded.role,
+    };
 
     next();
   } catch (error) {
-    return res.status(401).json({
-      success: false,
-      message: 'Invalid or expired token',
-      error: error.message,
-    });
+    next(
+      new UnauthorizedError(
+        "Invalid or expired token"
+      )
+    );
   }
 };
 
-module.exports = userMiddleware;
+module.exports = auth;

@@ -5,6 +5,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 
+const config = require("./config/env");
+
 const rateLimiter = require("./common/middleware/rateLimiter");
 const routes = require("./routes/v1");
 const errorHandler = require("./common/middleware/errorHandler");
@@ -18,9 +20,6 @@ const app = express();
 |--------------------------------------------------------------------------
 | Trust Proxy
 |--------------------------------------------------------------------------
-| Required when deploying behind:
-| Nginx, Render, Railway, Vercel, Heroku, etc.
-|--------------------------------------------------------------------------
 */
 app.set("trust proxy", 1);
 
@@ -31,10 +30,27 @@ app.set("trust proxy", 1);
 */
 app.use(helmet());
 
+/*
+|--------------------------------------------------------------------------
+| CORS
+|--------------------------------------------------------------------------
+*/
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "*",
+    origin: config.CLIENT_URL,
     credentials: true,
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS",
+    ],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
   })
 );
 
@@ -76,7 +92,7 @@ app.use(
 | Swagger Docs (Development Only)
 |--------------------------------------------------------------------------
 */
-if (process.env.NODE_ENV !== "production") {
+if (config.NODE_ENV !== "production") {
   app.use(
     "/api-docs",
     swaggerUi.serve,
@@ -93,7 +109,7 @@ app.get("/", (req, res) => {
   return res.status(200).json({
     success: true,
     message: "API is running successfully 🚀",
-    environment: process.env.NODE_ENV || "development",
+    environment: config.NODE_ENV,
   });
 });
 

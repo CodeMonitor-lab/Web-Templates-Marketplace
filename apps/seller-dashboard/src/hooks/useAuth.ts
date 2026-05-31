@@ -1,8 +1,15 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { useRouter } from "next/navigation";
+
 import authService from "@/services/auth.service";
+
 import type { AuthUser } from "@/types/user";
 
 type LoginPayload = {
@@ -18,9 +25,9 @@ type RegisterPayload = {
 
 export const useAuth = () => {
   const router = useRouter();
+
   const queryClient = useQueryClient();
 
-  // 🔐 SESSION (replaces useAuthUser)
   const {
     data: user,
     isLoading,
@@ -29,56 +36,77 @@ export const useAuth = () => {
     queryKey: ["auth-user"],
     queryFn: authService.getCurrentUser,
     retry: false,
+    staleTime: 1000 * 60 * 5,
   });
 
-  const isAuthenticated = !!user;
-  const isAdmin = user?.role === "admin";
-  const isSeller = user?.role === "seller";
-
-  // 🔐 LOGIN
   const loginMutation = useMutation({
-    mutationFn: (data: LoginPayload) => authService.login(data),
+    mutationFn: (data: LoginPayload) =>
+      authService.login(data),
+
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["auth-user"],
+      });
+
       router.replace("/dashboard");
     },
   });
 
-  // 🧾 REGISTER
   const registerMutation = useMutation({
-    mutationFn: (data: RegisterPayload) => authService.register(data),
+    mutationFn: (data: RegisterPayload) =>
+      authService.register(data),
+
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["auth-user"],
+      });
+
       router.replace("/dashboard");
     },
   });
 
-  // 🚪 LOGOUT
   const logoutMutation = useMutation({
     mutationFn: authService.logout,
+
     onSuccess: async () => {
-      queryClient.removeQueries({ queryKey: ["auth-user"] });
+      queryClient.clear();
+
+      localStorage.removeItem(
+        "accessToken"
+      );
+
       router.replace("/login");
     },
   });
 
   return {
-    // state
     user,
+
     isLoading,
     isError,
-    isAuthenticated,
-    isAdmin,
-    isSeller,
 
-    // actions
-    login: loginMutation.mutate,
-    register: registerMutation.mutate,
-    logout: logoutMutation.mutate,
+    isAuthenticated: !!user,
 
-    // mutation states
-    isLoggingIn: loginMutation.isPending,
-    isRegistering: registerMutation.isPending,
-    isLoggingOut: logoutMutation.isPending,
+    isAdmin:
+      user?.role?.toLowerCase() === "admin",
+
+    isSeller:
+      user?.role?.toLowerCase() === "seller",
+
+    login: loginMutation.mutateAsync,
+
+    register:
+      registerMutation.mutateAsync,
+
+    logout: logoutMutation.mutateAsync,
+
+    isLoggingIn:
+      loginMutation.isPending,
+
+    isRegistering:
+      registerMutation.isPending,
+
+    isLoggingOut:
+      logoutMutation.isPending,
   };
 };

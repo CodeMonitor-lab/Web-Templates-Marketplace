@@ -5,7 +5,15 @@ const express = require("express");
 const router = express.Router();
 
 const userController = require("./user.controller");
+
 const authMiddleware = require("../../common/middleware/auth");
+const validate = require("../../common/middleware/validate");
+
+const {
+  createUserSchema,
+  updateProfileSchema,
+  userIdSchema,
+} = require("./user.validation");
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +31,11 @@ const authMiddleware = require("../../common/middleware/auth");
  *       201:
  *         description: User created successfully
  */
-router.post("/", userController.createUser);
+router.post(
+  "/",
+  validate(createUserSchema),
+  userController.createUser
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +76,7 @@ router.get(
 router.put(
   "/profile",
   authMiddleware,
+  validate(updateProfileSchema),
   userController.updateProfile
 );
 
@@ -112,6 +125,7 @@ router.get(
 router.get(
   "/:id",
   authMiddleware,
+  validate(userIdSchema, "params"),
   userController.getUserById
 );
 
@@ -131,12 +145,15 @@ router.get(
  *       - in: path
  *         name: id
  *         required: true
+ *         schema:
+ *           type: string
  *     security:
  *       - bearerAuth: []
  */
 router.delete(
   "/:id",
   authMiddleware,
+  validate(userIdSchema, "params"),
   userController.deleteUser
 );
 

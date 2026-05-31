@@ -8,7 +8,7 @@ const User = require("./user.model");
 |--------------------------------------------------------------------------
 */
 const create = async (payload) => {
-  return await User.create(payload);
+  return User.create(payload);
 };
 
 /*
@@ -17,7 +17,7 @@ const create = async (payload) => {
 |--------------------------------------------------------------------------
 */
 const findAll = async () => {
-  return await User.find().select("-password");
+  return User.find();
 };
 
 /*
@@ -26,7 +26,7 @@ const findAll = async () => {
 |--------------------------------------------------------------------------
 */
 const findById = async (userId) => {
-  return await User.findById(userId).select("-password");
+  return User.findById(userId);
 };
 
 /*
@@ -35,7 +35,7 @@ const findById = async (userId) => {
 |--------------------------------------------------------------------------
 */
 const findByEmail = async (email) => {
-  return await User.findOne({ email });
+  return User.findOne({ email });
 };
 
 /*
@@ -44,14 +44,14 @@ const findByEmail = async (email) => {
 |--------------------------------------------------------------------------
 */
 const updateById = async (userId, payload) => {
-  return await User.findByIdAndUpdate(
+  return User.findByIdAndUpdate(
     userId,
     payload,
     {
       new: true,
       runValidators: true,
     }
-  ).select("-password");
+  );
 };
 
 /*
@@ -60,7 +60,7 @@ const updateById = async (userId, payload) => {
 |--------------------------------------------------------------------------
 */
 const deleteById = async (userId) => {
-  return await User.findByIdAndDelete(userId);
+  return User.findByIdAndDelete(userId);
 };
 
 module.exports = {

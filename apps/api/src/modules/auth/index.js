@@ -1,11 +1,9 @@
-const routes = require('./auth.routes');
-const controller = require('./auth.controller');
-const service = require('./auth.service');
-const middleware = require('./auth.middleware');
+// src/modules/auth/index.js
+
+const authRoutes = require(
+  "./auth.routes"
+);
 
 module.exports = {
-  routes,
-  controller,
-  service,
-  middleware
+  authRoutes,
 };

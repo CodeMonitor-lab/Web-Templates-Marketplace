@@ -4,7 +4,11 @@ A collection of modern landing pages and reusable templates for businesses, agen
 
 ## 🌐 Live Demo
 
+### Marketplace Web
 👉 https://web-templates-marketplace-web.vercel.app/
+
+### Seller Dashboard
+👉https://web-templates-marketplace-seller-da.vercel.app/
 
 ---
 
