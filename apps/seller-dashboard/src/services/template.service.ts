@@ -4,7 +4,7 @@ import API_ENDPOINTS from '@/lib/api/endpoints';
 const templateService = {
   async getTemplates() {
     const response = await api.get(
-      API_ENDPOINTS.TEMPLATE.GET_ALL
+      API_ENDPOINTS.TEMPLATES.GET_ALL
     );
 
     return response.data;
@@ -12,7 +12,7 @@ const templateService = {
 
   async createTemplate(data: unknown) {
     const response = await api.post(
-      API_ENDPOINTS.TEMPLATE.CREATE,
+      API_ENDPOINTS.TEMPLATES.CREATE,
       data
     );
 
@@ -21,7 +21,7 @@ const templateService = {
 
   async updateTemplate(id: string, data: unknown) {
     const response = await api.put(
-      API_ENDPOINTS.TEMPLATE.UPDATE(id),
+      API_ENDPOINTS.TEMPLATES.UPDATE(id),
       data
     );
 
@@ -30,7 +30,7 @@ const templateService = {
 
   async deleteTemplate(id: string) {
     const response = await api.delete(
-      API_ENDPOINTS.TEMPLATE.DELETE(id)
+      API_ENDPOINTS.TEMPLATES.DELETE(id)
     );
 
     return response.data;

@@ -3,6 +3,8 @@
 import api from "@/lib/api/axios";
 import API_ENDPOINTS from "@/lib/api/endpoints";
 
+import type { AuthUser } from "@/types/user";
+
 type LoginPayload = {
   email: string;
   password: string;
@@ -14,9 +16,16 @@ type RegisterPayload = {
   password: string;
 };
 
+type AuthResponse = {
+  token: string;
+  user: AuthUser;
+};
+
 const authService = {
-  async login(data: LoginPayload) {
-    const res = await api.post(
+  async login(
+    data: LoginPayload
+  ): Promise<AuthUser> {
+    const res = await api.post<AuthResponse>(
       API_ENDPOINTS.AUTH.LOGIN,
       data
     );
@@ -35,8 +44,8 @@ const authService = {
 
   async register(
     data: RegisterPayload
-  ) {
-    const res = await api.post(
+  ): Promise<AuthUser> {
+    const res = await api.post<AuthResponse>(
       API_ENDPOINTS.AUTH.REGISTER,
       data
     );
@@ -53,7 +62,7 @@ const authService = {
     return user;
   },
 
-  async logout() {
+  async logout(): Promise<void> {
     try {
       await api.post(
         API_ENDPOINTS.AUTH.LOGOUT
@@ -65,12 +74,26 @@ const authService = {
     }
   },
 
-  async getCurrentUser() {
+  async getCurrentUser(): Promise<AuthUser> {
     const res = await api.get(
       API_ENDPOINTS.USERS.PROFILE
     );
 
     return res.data.data;
+  },
+
+  getToken(): string | null {
+    if (typeof window === "undefined") {
+      return null;
+    }
+
+    return localStorage.getItem(
+      "accessToken"
+    );
+  },
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
   },
 };
 

@@ -43,10 +43,11 @@ export const useAuth = () => {
     mutationFn: (data: LoginPayload) =>
       authService.login(data),
 
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["auth-user"],
-      });
+    onSuccess: (user) => {
+      queryClient.setQueryData(
+        ["auth-user"],
+        user
+      );
 
       router.replace("/dashboard");
     },
@@ -56,10 +57,11 @@ export const useAuth = () => {
     mutationFn: (data: RegisterPayload) =>
       authService.register(data),
 
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["auth-user"],
-      });
+    onSuccess: (user) => {
+      queryClient.setQueryData(
+        ["auth-user"],
+        user
+      );
 
       router.replace("/dashboard");
     },
@@ -68,7 +70,7 @@ export const useAuth = () => {
   const logoutMutation = useMutation({
     mutationFn: authService.logout,
 
-    onSuccess: async () => {
+    onSuccess: () => {
       queryClient.clear();
 
       localStorage.removeItem(
@@ -93,12 +95,14 @@ export const useAuth = () => {
     isSeller:
       user?.role?.toLowerCase() === "seller",
 
-    login: loginMutation.mutateAsync,
+    login:
+      loginMutation.mutateAsync,
 
     register:
       registerMutation.mutateAsync,
 
-    logout: logoutMutation.mutateAsync,
+    logout:
+      logoutMutation.mutateAsync,
 
     isLoggingIn:
       loginMutation.isPending,

@@ -2,6 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+
+import { toast } from "sonner";
+
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/input";
+
 import { useAuth } from "@/hooks/useAuth";
 
 interface RegisterForm {
@@ -11,7 +17,8 @@ interface RegisterForm {
 }
 
 export default function RegisterPage() {
-  const { register, isRegistering } = useAuth();
+  const { register, isRegistering } =
+    useAuth();
 
   const [form, setForm] = useState<RegisterForm>({
     name: "",
@@ -19,17 +26,14 @@ export default function RegisterPage() {
     password: "",
   });
 
-  const [error, setError] = useState("");
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+  const updateField = (
+    field: keyof RegisterForm,
+    value: string
   ) => {
     setForm((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [field]: value,
     }));
-
-    if (error) setError("");
   };
 
   const handleSubmit = async (
@@ -38,102 +42,116 @@ export default function RegisterPage() {
     e.preventDefault();
 
     if (!form.name.trim()) {
-      return setError("Name is required");
+      toast.error("Name is required");
+      return;
     }
 
     if (!form.email.trim()) {
-      return setError("Email is required");
+      toast.error("Email is required");
+      return;
+    }
+
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(form.email)) {
+      toast.error(
+        "Please enter a valid email address"
+      );
+      return;
     }
 
     if (form.password.length < 6) {
-      return setError(
+      toast.error(
         "Password must be at least 6 characters"
       );
+      return;
     }
 
     try {
       await register({
-        name: form.name,
-        email: form.email,
+        name: form.name.trim(),
+        email: form.email.trim(),
         password: form.password,
       });
+
+      toast.success(
+        "Account created successfully"
+      );
     } catch (err: any) {
-      setError(
+      toast.error(
         err?.response?.data?.message ||
+          err?.message ||
           "Registration failed"
       );
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
-      <div className="w-full max-w-md rounded-2xl border bg-white p-6 shadow-sm">
-        <h1 className="mb-2 text-2xl font-bold">
+    <div className="flex min-h-screen items-center justify-center bg-background px-6">
+      <div className="w-full max-w-md rounded-3xl border bg-card p-8 shadow-sm">
+        <h1 className="text-3xl font-bold">
           Create Account
         </h1>
 
-        <p className="mb-6 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-muted-foreground">
           Register to access your seller dashboard.
         </p>
 
-        {error && (
-          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
-            {error}
-          </div>
-        )}
-
         <form
           onSubmit={handleSubmit}
-          className="space-y-4"
+          className="mt-6 space-y-4"
         >
-          <input
-            name="name"
-            type="text"
+          <Input
             placeholder="Full Name"
             value={form.name}
-            onChange={handleChange}
             disabled={isRegistering}
-            className="w-full rounded-lg border p-3"
+            onChange={(e) =>
+              updateField("name", e.target.value)
+            }
           />
 
-          <input
-            name="email"
+          <Input
             type="email"
-            placeholder="Email"
+            placeholder="Email Address"
             value={form.email}
-            onChange={handleChange}
             disabled={isRegistering}
-            className="w-full rounded-lg border p-3"
+            onChange={(e) =>
+              updateField("email", e.target.value)
+            }
           />
 
-          <input
-            name="password"
+          <Input
             type="password"
             placeholder="Password"
             value={form.password}
-            onChange={handleChange}
             disabled={isRegistering}
-            className="w-full rounded-lg border p-3"
+            onChange={(e) =>
+              updateField(
+                "password",
+                e.target.value
+              )
+            }
           />
 
-          <button
+          <Button
             type="submit"
+            className="w-full py-3"
             disabled={isRegistering}
-            className="w-full rounded-lg bg-black p-3 text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isRegistering
               ? "Creating Account..."
-              : "Register"}
-          </button>
+              : "Create Account"}
+          </Button>
         </form>
 
-        <p className="mt-6 text-center text-sm">
+        <p className="mt-6 text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-medium underline"
+            className="font-medium text-foreground hover:underline"
           >
-            Sign in
+            Sign In
           </Link>
         </p>
       </div>
