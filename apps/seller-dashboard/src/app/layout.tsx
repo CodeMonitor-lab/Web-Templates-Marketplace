@@ -1,11 +1,8 @@
-// src/app/layout.tsx
-
 import "./globals.css";
 
-import AuthProvider from "@/providers/auth-provider";
-import QueryProvider from "@/providers/query-provider";
-
 import { Toaster } from "sonner";
+import ReduxProvider from "@/providers/redux-provider";
+import AuthProvider from "@/providers/auth-provider";
 
 export default function RootLayout({
   children,
@@ -15,7 +12,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <QueryProvider>
+        <ReduxProvider>
           <AuthProvider>
             {children}
 
@@ -23,11 +20,11 @@ export default function RootLayout({
               richColors
               position="top-right"
               closeButton
-              expand={true}
+              expand
               duration={3000}
             />
           </AuthProvider>
-        </QueryProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

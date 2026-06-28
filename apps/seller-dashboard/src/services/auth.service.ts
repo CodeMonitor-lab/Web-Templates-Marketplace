@@ -1,99 +1,49 @@
-// src/services/auth.service.ts
-
-import api from "@/lib/api/axios";
-import API_ENDPOINTS from "@/lib/api/endpoints";
-
-import type { AuthUser } from "@/types/user";
-
-type LoginPayload = {
-  email: string;
-  password: string;
-};
-
-type RegisterPayload = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-type AuthResponse = {
-  token: string;
-  user: AuthUser;
-};
+import axiosInstance from "@/lib/api/axios";
 
 const authService = {
-  async login(
-    data: LoginPayload
-  ): Promise<AuthUser> {
-    const res = await api.post<AuthResponse>(
-      API_ENDPOINTS.AUTH.LOGIN,
+  login: async (data: any) => {
+    const res = await axiosInstance.post("/auth/login", data);
+    return res.data;
+  },
+
+  register: async (data: any) => {
+    const res = await axiosInstance.post("/auth/register", data);
+    return res.data;
+  },
+
+  logout: async () => {
+    const res = await axiosInstance.post("/auth/logout");
+    return res.data;
+  },
+
+  getCurrentUser: async () => {
+    const res = await axiosInstance.get("/auth/me");
+    return res.data;
+  },
+
+  forgotPassword: async (data: { email: string }) => {
+    const res = await axiosInstance.post(
+      "/auth/forgot-password",
       data
     );
-
-    const { token, user } = res.data;
-
-    if (token) {
-      localStorage.setItem(
-        "accessToken",
-        token
-      );
-    }
-
-    return user;
+    return res.data;
   },
 
-  async register(
-    data: RegisterPayload
-  ): Promise<AuthUser> {
-    const res = await api.post<AuthResponse>(
-      API_ENDPOINTS.AUTH.REGISTER,
+  resetPassword: async (data: { token: string; password: string }) => {
+    const res = await axiosInstance.post(
+      "/auth/reset-password",
       data
     );
-
-    const { token, user } = res.data;
-
-    if (token) {
-      localStorage.setItem(
-        "accessToken",
-        token
-      );
-    }
-
-    return user;
+    return res.data;
   },
 
-  async logout(): Promise<void> {
-    try {
-      await api.post(
-        API_ENDPOINTS.AUTH.LOGOUT
-      );
-    } finally {
-      localStorage.removeItem(
-        "accessToken"
-      );
-    }
+  getStoredUser: () => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
   },
 
-  async getCurrentUser(): Promise<AuthUser> {
-    const res = await api.get(
-      API_ENDPOINTS.USERS.PROFILE
-    );
-
-    return res.data.data;
-  },
-
-  getToken(): string | null {
-    if (typeof window === "undefined") {
-      return null;
-    }
-
-    return localStorage.getItem(
-      "accessToken"
-    );
-  },
-
-  isAuthenticated(): boolean {
-    return !!this.getToken();
+  getToken: () => {
+    return localStorage.getItem("acessstoken");
   },
 };
 

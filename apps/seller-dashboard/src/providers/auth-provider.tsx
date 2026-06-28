@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+
+import { useAppDispatch } from "@/store/hooks";
+import { setCredentials } from "@/store/slices/authSlice";
+
 import authService from "@/services/auth.service";
 
 export default function AuthProvider({
@@ -9,15 +12,16 @@ export default function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // preload user session on app start
-    queryClient.prefetchQuery({
-      queryKey: ["auth-user"],
-      queryFn: authService.getCurrentUser,
-    });
-  }, [queryClient]);
+    const token = authService.getToken();
+    const user = authService.getStoredUser();
+
+    if (token && user) {
+      dispatch(setCredentials({ token, user }));
+    }
+  }, [dispatch]);
 
   return <>{children}</>;
 }

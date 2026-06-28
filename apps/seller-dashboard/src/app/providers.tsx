@@ -1,12 +1,22 @@
 "use client";
 
-import QueryProvider from "@/providers/query-provider";
+import { ReactNode } from "react";
+
+import ReduxProvider from "@/providers/redux-provider";
 import AuthProvider from "@/providers/auth-provider";
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+interface ProvidersProps {
+  children: ReactNode;
+}
+
+export default function Providers({
+  children,
+}: ProvidersProps) {
   return (
-    <QueryProvider>
-      <AuthProvider>{children}</AuthProvider>
-    </QueryProvider>
+    <ReduxProvider>
+      <AuthProvider>
+        {children}
+      </AuthProvider>
+    </ReduxProvider>
   );
 }

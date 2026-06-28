@@ -1,23 +1,13 @@
-const storage = {
-    set(key: string, value: unknown) {
-      if (typeof window === 'undefined') return;
-  
-      localStorage.setItem(key, JSON.stringify(value));
-    },
-  
-    get<T>(key: string): T | null {
-      if (typeof window === 'undefined') return null;
-  
-      const item = localStorage.getItem(key);
-  
-      return item ? JSON.parse(item) : null;
-    },
-  
-    remove(key: string) {
-      if (typeof window === 'undefined') return;
-  
-      localStorage.removeItem(key);
-    },
-  };
-  
-  export default storage;
+export const storage = {
+  setToken: (token: string) => localStorage.setItem("token", token),
+  getToken: () => localStorage.getItem("token"),
+  removeToken: () => localStorage.removeItem("token"),
+
+  setUser: (user: any) =>
+    localStorage.setItem("user", JSON.stringify(user)),
+  getUser: () => {
+    const data = localStorage.getItem("user");
+    return data ? JSON.parse(data) : null;
+  },
+  removeUser: () => localStorage.removeItem("user"),
+};

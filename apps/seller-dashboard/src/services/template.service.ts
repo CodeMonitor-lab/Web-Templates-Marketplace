@@ -1,39 +1,29 @@
-import api from '@/lib/api/axios';
-import API_ENDPOINTS from '@/lib/api/endpoints';
+import api from "@/lib/api/axios";
 
 const templateService = {
-  async getTemplates() {
-    const response = await api.get(
-      API_ENDPOINTS.TEMPLATES.GET_ALL
-    );
-
-    return response.data;
+  createTemplate: async (data: any) => {
+    const res = await api.post("/templates", data);
+    return res.data;
   },
 
-  async createTemplate(data: unknown) {
-    const response = await api.post(
-      API_ENDPOINTS.TEMPLATES.CREATE,
-      data
-    );
-
-    return response.data;
+  updateTemplate: async (id: string, data: any) => {
+    const res = await api.patch(`/templates/${id}`, data);
+    return res.data;
   },
 
-  async updateTemplate(id: string, data: unknown) {
-    const response = await api.put(
-      API_ENDPOINTS.TEMPLATES.UPDATE(id),
-      data
-    );
-
-    return response.data;
+  getTemplates: async () => {
+    const res = await api.get("/templates");
+    return res.data;
   },
 
-  async deleteTemplate(id: string) {
-    const response = await api.delete(
-      API_ENDPOINTS.TEMPLATES.DELETE(id)
-    );
+  getTemplateById: async (id: string) => {
+    const res = await api.get(`/templates/${id}`);
+    return res.data;
+  },
 
-    return response.data;
+  deleteTemplate: async (id: string) => {
+    const res = await api.delete(`/templates/${id}`);
+    return res.data;
   },
 };
 

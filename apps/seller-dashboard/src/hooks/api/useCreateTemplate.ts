@@ -1,13 +1,31 @@
-'use client';
+// src/hooks/api/useCreateTemplate.ts
+"use client";
 
-import templateService from '@/services/template.service';
+import { useState } from "react";
+import templateService from "@/services/template.service";
 
-export default function useCreateTemplate() {
-  const createTemplate = async (data: unknown) => {
-    return await templateService.createTemplate(data);
+export const useCreateTemplate = () => {
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<any>(null);
+
+  const createTemplate = async (data: any) => {
+    try {
+      setIsPending(true);
+      setError(null);
+
+      const res = await templateService.createTemplate(data);
+      return res;
+    } catch (err: any) {
+      setError(err);
+      throw err;
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return {
     createTemplate,
+    isPending,
+    error,
   };
-}
+};

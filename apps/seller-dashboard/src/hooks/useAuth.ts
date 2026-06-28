@@ -1,116 +1,53 @@
 "use client";
 
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
-
 import { useRouter } from "next/navigation";
 
-import authService from "@/services/auth.service";
-
-import type { AuthUser } from "@/types/user";
-
-type LoginPayload = {
-  email: string;
-  password: string;
-};
-
-type RegisterPayload = {
-  name: string;
-  email: string;
-  password: string;
-};
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  loginUser,
+  registerUser,
+  logoutUser,
+} from "@/store/slices/authSlice";
 
 export const useAuth = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
-  const queryClient = useQueryClient();
+  const { user, token, loading, error } = useAppSelector(
+    (state) => state.auth
+  );
 
-  const {
-    data: user,
-    isLoading,
-    isError,
-  } = useQuery<AuthUser | null>({
-    queryKey: ["auth-user"],
-    queryFn: authService.getCurrentUser,
-    retry: false,
-    staleTime: 1000 * 60 * 5,
-  });
+  const login = async (data: { email: string; password: string }) => {
+    await dispatch(loginUser(data)).unwrap();
+    router.replace("/dashboard");
+  };
 
-  const loginMutation = useMutation({
-    mutationFn: (data: LoginPayload) =>
-      authService.login(data),
+  const register = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    await dispatch(registerUser(data)).unwrap();
+    router.replace("/dashboard");
+  };
 
-    onSuccess: (user) => {
-      queryClient.setQueryData(
-        ["auth-user"],
-        user
-      );
-
-      router.replace("/dashboard");
-    },
-  });
-
-  const registerMutation = useMutation({
-    mutationFn: (data: RegisterPayload) =>
-      authService.register(data),
-
-    onSuccess: (user) => {
-      queryClient.setQueryData(
-        ["auth-user"],
-        user
-      );
-
-      router.replace("/dashboard");
-    },
-  });
-
-  const logoutMutation = useMutation({
-    mutationFn: authService.logout,
-
-    onSuccess: () => {
-      queryClient.clear();
-
-      localStorage.removeItem(
-        "accessToken"
-      );
-
-      router.replace("/login");
-    },
-  });
+  const logout = async () => {
+    await dispatch(logoutUser()).unwrap();
+    router.replace("/login");
+  };
 
   return {
     user,
+    token,
+    error,
+    isLoading: loading,
+    isAuthenticated: !!token,
 
-    isLoading,
-    isError,
+    isAdmin: user?.role === "admin",
+    isSeller: user?.role === "seller",
 
-    isAuthenticated: !!user,
-
-    isAdmin:
-      user?.role?.toLowerCase() === "admin",
-
-    isSeller:
-      user?.role?.toLowerCase() === "seller",
-
-    login:
-      loginMutation.mutateAsync,
-
-    register:
-      registerMutation.mutateAsync,
-
-    logout:
-      logoutMutation.mutateAsync,
-
-    isLoggingIn:
-      loginMutation.isPending,
-
-    isRegistering:
-      registerMutation.isPending,
-
-    isLoggingOut:
-      logoutMutation.isPending,
+    login,
+    register,
+    logout,
   };
 };

@@ -2,32 +2,30 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get("auth-token")?.value;
-  const { pathname } = request.nextUrl;
-
-  const isAuthRoute =
-    pathname.startsWith("/login") || pathname.startsWith("/register");
-
+  const token = request.cookies.get("accessToken")?.value;
+ if(!token){
+  return NextResponse.redirect(new URL("/login", request.url));
+ }
   const isProtectedRoute =
-    pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/templates") ||
-    pathname.startsWith("/orders") ||
-    pathname.startsWith("/analytics") ||
-    pathname.startsWith("/settings");
+    request.nextUrl.pathname.startsWith("/dashboard") ||
+    request.nextUrl.pathname.startsWith("/analytics") ||
+    request.nextUrl.pathname.startsWith("/templates") ||
+    request.nextUrl.pathname.startsWith("/orders") ||
+    request.nextUrl.pathname.startsWith("/settings");
 
-  // 🚨 block protected routes
   if (isProtectedRoute && !token) {
     return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // 🚀 prevent logged-in users from auth pages
-  if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/analytics/:path*",
+    "/templates/:path*",
+    "/orders/:path*",
+    "/settings/:path*",
+  ],
 };

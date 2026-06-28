@@ -1,11 +1,9 @@
-import { NextResponse } from 'next/server';
-import { version } from 'os';
+import { NextResponse } from "next/server";
 
 export async function GET() {
   return NextResponse.json({
     success: true,
-    message: 'API is healthy',
+    environment: process.env.NODE_ENV,
     timestamp: new Date().toISOString(),
-    version: "1.0.0",
   });
 }
