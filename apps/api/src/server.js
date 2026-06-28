@@ -7,32 +7,25 @@ const logger = require("./shared/logger/logger");
 
 const startServer = async () => {
   try {
-    /*
-    |--------------------------------------------------------------------------
-    | Database Connection
-    |--------------------------------------------------------------------------
-    */
     await connectDB();
 
-    /*
-    |--------------------------------------------------------------------------
-    | Start Server
-    |--------------------------------------------------------------------------
-    */
+    const PORT = process.env.PORT || config.PORT;
 
-    const baseUrl = `http://${config.HOST}:${config.PORT}`;
-
-    const server = app.listen(config.PORT, () => {
+    const server = app.listen(PORT, () => {
       logger.info(
-        `Server running on ${baseUrl}\nAPI Documentation: ${baseUrl}/api-docs`
+        `Server running in ${config.NODE_ENV} mode`
       );
-    });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Graceful Shutdown
-    |--------------------------------------------------------------------------
-    */
+      logger.info(
+        `Listening on port ${PORT}`
+      );
+
+      if (config.NODE_ENV === "development") {
+        logger.info(
+          `API Documentation: http://localhost:${PORT}/api-docs`
+        );
+      }
+    });
 
     process.on("SIGTERM", () => {
       logger.info("SIGTERM received. Shutting down gracefully...");

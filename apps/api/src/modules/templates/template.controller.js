@@ -1,5 +1,4 @@
 const service = require("./template.service");
-
 const asyncHandler = require("../../common/middleware/asyncHandler");
 const { successResponse } = require("../../shared/utils/apiResponse");
 const { TEMPLATE_MESSAGES } = require("./template.constants");
@@ -12,15 +11,10 @@ const { TEMPLATE_MESSAGES } = require("./template.constants");
 const createTemplate = asyncHandler(async (req, res) => {
   const template = await service.createTemplate({
     ...req.body,
-    createdBy: req.user.id,
+    createdBy: req.user?.id,
   });
 
-  return successResponse(
-    res,
-    template,
-    TEMPLATE_MESSAGES.CREATED,
-    201
-  );
+  return successResponse(res, template, TEMPLATE_MESSAGES.CREATED, 201);
 });
 
 /*
@@ -31,11 +25,7 @@ const createTemplate = asyncHandler(async (req, res) => {
 const getTemplateById = asyncHandler(async (req, res) => {
   const template = await service.getTemplateById(req.params.id);
 
-  return successResponse(
-    res,
-    template,
-    TEMPLATE_MESSAGES.FETCHED
-  );
+  return successResponse(res, template, TEMPLATE_MESSAGES.FETCHED);
 });
 
 /*
@@ -46,11 +36,7 @@ const getTemplateById = asyncHandler(async (req, res) => {
 const getTemplates = asyncHandler(async (req, res) => {
   const templates = await service.getTemplates(req.query);
 
-  return successResponse(
-    res,
-    templates,
-    TEMPLATE_MESSAGES.LISTED
-  );
+  return successResponse(res, templates, TEMPLATE_MESSAGES.LISTED);
 });
 
 /*
@@ -59,16 +45,9 @@ const getTemplates = asyncHandler(async (req, res) => {
 |--------------------------------------------------------------------------
 */
 const updateTemplate = asyncHandler(async (req, res) => {
-  const template = await service.updateTemplate(
-    req.params.id,
-    req.body
-  );
+  const template = await service.updateTemplate(req.params.id, req.body);
 
-  return successResponse(
-    res,
-    template,
-    TEMPLATE_MESSAGES.UPDATED
-  );
+  return successResponse(res, template, TEMPLATE_MESSAGES.UPDATED);
 });
 
 /*
@@ -79,11 +58,7 @@ const updateTemplate = asyncHandler(async (req, res) => {
 const deleteTemplate = asyncHandler(async (req, res) => {
   await service.deleteTemplate(req.params.id);
 
-  return successResponse(
-    res,
-    null,
-    TEMPLATE_MESSAGES.DELETED
-  );
+  return successResponse(res, null, TEMPLATE_MESSAGES.DELETED);
 });
 
 module.exports = {

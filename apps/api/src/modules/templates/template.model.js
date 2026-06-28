@@ -1,41 +1,17 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const templateSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    title: { type: String, required: true, trim: true },
 
-    slug: {
-      type: String,
-      required: true,
-      unique: true, // ✅ keeps uniqueness index
-      lowercase: true,
-      trim: true,
-    },
+    slug: { type: String, unique: true, index: true },
 
-    description: {
-      type: String,
-      required: true,
-    },
+    description: { type: String, required: true },
+    price: { type: Number, required: true, min: 0 },
 
-    price: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-
-    thumbnail: {
-      type: String,
-      default: null,
-    },
-
-    previewUrl: {
-      type: String,
-      default: null,
-    },
+    thumbnail: { type: String, default: null },
+    previewUrl: { type: String, default: null },
 
     category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -43,15 +19,9 @@ const templateSchema = new mongoose.Schema(
       required: true,
     },
 
-    tags: {
-      type: [String],
-      default: [],
-    },
+    tags: { type: [String], default: [] },
 
-    isPublished: {
-      type: Boolean,
-      default: false,
-    },
+    isPublished: { type: Boolean, default: false },
 
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -59,13 +29,7 @@ const templateSchema = new mongoose.Schema(
       required: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-
-
-const Template = mongoose.model("Template", templateSchema);
-
-module.exports = Template;
+module.exports = mongoose.model("Template", templateSchema);

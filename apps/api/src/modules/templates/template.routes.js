@@ -7,6 +7,7 @@ const auth = require("../../common/middleware/auth");
 const {
   createTemplateSchema,
   updateTemplateSchema,
+  templateIdSchema,
 } = require("./template.validation");
 
 const router = express.Router();
@@ -16,17 +17,6 @@ const router = express.Router();
 | GET ALL TEMPLATES
 |--------------------------------------------------------------------------
 */
-/**
- * @swagger
- * /templates:
- *   get:
- *     summary: Get all templates
- *     tags:
- *       - Templates
- *     responses:
- *       200:
- *         description: Success
- */
 router.get("/", controller.getTemplates);
 
 /*
@@ -34,61 +24,20 @@ router.get("/", controller.getTemplates);
 | GET TEMPLATE BY ID
 |--------------------------------------------------------------------------
 */
-/**
- * @swagger
- * /templates/{id}:
- *   get:
- *     summary: Get template by ID
- *     tags:
- *       - Templates
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Success
- */
-router.get("/:id", controller.getTemplateById);
+router.get(
+  "/:id",
+  validate(templateIdSchema, "params"),
+  controller.getTemplateById
+);
 
 /*
 |--------------------------------------------------------------------------
 | CREATE TEMPLATE
 |--------------------------------------------------------------------------
 */
-/**
- * @swagger
- * /templates:
- *   post:
- *     summary: Create template
- *     tags:
- *       - Templates
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - title
- *               - slug
- *               - description
- *               - price
- *             properties:
- *               title:
- *                 type: string
- *               slug:
- *                 type: string
- *               description:
- *                 type: string
- *               price:
- *                 type: number
- */
 router.post(
   "/",
-  auth,
+  auth(), // 🔥 IMPORTANT FIX (you missed this earlier)
   validate(createTemplateSchema),
   controller.createTemplate
 );
@@ -98,26 +47,10 @@ router.post(
 | UPDATE TEMPLATE
 |--------------------------------------------------------------------------
 */
-/**
- * @swagger
- * /templates/{id}:
- *   patch:
- *     summary: Update template
- *     tags:
- *       - Templates
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Updated
- */
 router.patch(
   "/:id",
-  auth,
+  auth(),
+  validate(templateIdSchema, "params"),
   validate(updateTemplateSchema),
   controller.updateTemplate
 );
@@ -127,23 +60,11 @@ router.patch(
 | DELETE TEMPLATE
 |--------------------------------------------------------------------------
 */
-/**
- * @swagger
- * /templates/{id}:
- *   delete:
- *     summary: Delete template
- *     tags:
- *       - Templates
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Deleted
- */
-router.delete("/:id", auth, controller.deleteTemplate);
+router.delete(
+  "/:id",
+  auth(),
+  validate(templateIdSchema, "params"),
+  controller.deleteTemplate
+);
 
 module.exports = router;

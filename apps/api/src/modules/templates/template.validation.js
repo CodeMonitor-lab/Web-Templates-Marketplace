@@ -1,16 +1,21 @@
-// modules/templates/template.validation.js
-
 const Joi = require("joi");
+
+/*
+|--------------------------------------------------------------------------
+| Template ID Validation
+|--------------------------------------------------------------------------
+*/
+const templateIdSchema = Joi.object({
+  id: Joi.string().hex().length(24).required(),
+});
 
 /*
 |--------------------------------------------------------------------------
 | Create Template Validation
 |--------------------------------------------------------------------------
 */
-
 const createTemplateSchema = Joi.object({
   title: Joi.string().required(),
-  slug: Joi.string().required(),
   description: Joi.string().required(),
   price: Joi.number().min(0).required(),
   thumbnail: Joi.string().uri().optional(),
@@ -25,10 +30,8 @@ const createTemplateSchema = Joi.object({
 | Update Template Validation
 |--------------------------------------------------------------------------
 */
-
 const updateTemplateSchema = Joi.object({
   title: Joi.string().optional(),
-  slug: Joi.string().optional(),
   description: Joi.string().optional(),
   price: Joi.number().min(0).optional(),
   thumbnail: Joi.string().uri().optional(),
@@ -41,4 +44,5 @@ const updateTemplateSchema = Joi.object({
 module.exports = {
   createTemplateSchema,
   updateTemplateSchema,
+  templateIdSchema,
 };

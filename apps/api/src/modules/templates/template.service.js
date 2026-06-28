@@ -1,9 +1,5 @@
-// modules/templates/template.service.js
-
 const repository = require("./template.repository");
-
 const { toTemplateResponse } = require("./template.mapper");
-
 const NotFoundError = require("../../shared/errors/NotFoundError");
 
 /*
@@ -11,10 +7,8 @@ const NotFoundError = require("../../shared/errors/NotFoundError");
 | Create Template
 |--------------------------------------------------------------------------
 */
-
 const createTemplate = async (payload) => {
   const template = await repository.createTemplate(payload);
-
   return toTemplateResponse(template);
 };
 
@@ -23,7 +17,6 @@ const createTemplate = async (payload) => {
 | Get Template By ID
 |--------------------------------------------------------------------------
 */
-
 const getTemplateById = async (id) => {
   const template = await repository.getTemplateById(id);
 
@@ -39,9 +32,10 @@ const getTemplateById = async (id) => {
 | Get Templates
 |--------------------------------------------------------------------------
 */
-
 const getTemplates = async (query) => {
-  const templates = await repository.getTemplates({}, query);
+  const result = await repository.getTemplates({}, query);
+
+  const templates = Array.isArray(result) ? result : [];
 
   return templates.map(toTemplateResponse);
 };
@@ -51,7 +45,6 @@ const getTemplates = async (query) => {
 | Update Template
 |--------------------------------------------------------------------------
 */
-
 const updateTemplate = async (id, payload) => {
   const template = await repository.updateTemplate(id, payload);
 
@@ -67,7 +60,6 @@ const updateTemplate = async (id, payload) => {
 | Delete Template
 |--------------------------------------------------------------------------
 */
-
 const deleteTemplate = async (id) => {
   const template = await repository.deleteTemplate(id);
 
