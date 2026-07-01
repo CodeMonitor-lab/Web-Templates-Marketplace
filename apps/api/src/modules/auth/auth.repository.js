@@ -1,6 +1,6 @@
 // src/modules/auth/auth.repository.js
 
-const User = require("../users/user.model");
+const User = require("./auth.model");
 
 const createUser = async (payload) => {
   return User.create(payload);
@@ -14,10 +14,7 @@ const findById = async (id) => {
   return User.findById(id).select("+password");
 };
 
-const updatePassword = async (
-  userId,
-  password
-) => {
+const updatePassword = async (userId, password) => {
   return User.findByIdAndUpdate(
     userId,
     { password },

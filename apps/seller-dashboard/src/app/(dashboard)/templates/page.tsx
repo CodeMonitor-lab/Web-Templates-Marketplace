@@ -1,117 +1,65 @@
+// src/app/dashboard/templates/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
-import { getTemplates } from "@/components/templates/template-actions";
+import { useTemplates } from "@/features/templates/hooks";
+import Button from "@/components/ui/Button";
+import ErrorMessage from "@/components/shared/ErrorMessage";
+import {
+  TemplateFilters,
+  TemplateStats,
+  TemplateTable,
+} from "@/features/templates/components";
 
 export default function TemplatesPage() {
-  const [templates, setTemplates] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // 1. Extract centralized template states and actions from our hook facade
+  const { templates, loading, error, fetchTemplates } = useTemplates();
 
+  // 2. Trigger automatic data hydration on initial component mount
   useEffect(() => {
-    let ignore = false;
-
-    const loadTemplates = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const data = await getTemplates();
-
-        // ✅ NORMALIZE API RESPONSE
-        const list =
-          data?.data ||
-          data?.templates ||
-          (Array.isArray(data) ? data : []);
-
-        // ✅ FIX: ensure _id always exists
-        const normalized = list.map((t: any) => ({
-          ...t,
-          _id: t._id || t.id || null,
-        }));
-
-        if (!ignore) {
-          setTemplates(normalized);
-        }
-      } catch (err: any) {
-        console.error("Failed to load templates:", err);
-
-        if (!ignore) {
-          setError(err?.message || "Failed to load templates");
-          setTemplates([]);
-        }
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    };
-
-    loadTemplates();
-
-    return () => {
-      ignore = true;
-    };
-  }, []);
-
-  // ---------------- LOADING ----------------
-  if (loading) {
-    return <div className="p-6 text-gray-500">Loading templates...</div>;
-  }
-
-  // ---------------- ERROR ----------------
-  if (error) {
-    return <div className="p-6 text-red-500">{error}</div>;
-  }
-
-  // ---------------- EMPTY ----------------
-  if (!templates.length) {
-    return <div className="p-6 text-gray-500">No templates found</div>;
-  }
-
-  // ---------------- FILTER VALID ----------------
-  const validTemplates = templates.filter((t) => t._id);
+    fetchTemplates();
+  }, [fetchTemplates]);
 
   return (
-    <div className="space-y-6">
-      {/* GRID */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {validTemplates.map((template, index) => (
-          <div
-            key={template._id || `${template.title}-${index}`}
-            className="rounded-2xl border p-4 transition hover:shadow-md"
-          >
-            <h2 className="text-lg font-semibold">
-              {template.title || "Untitled"}
-            </h2>
-
-            <p className="text-sm text-gray-500">
-              {template.category?.name ||
-                template.category ||
-                "No category"}
-            </p>
-
-            <p className="mt-2 font-medium">
-              ₹{template.price ?? 0}
-            </p>
-
-            {/* ✅ SAFE EDIT LINK */}
-            <div className="mt-3 flex gap-2">
-              {template._id ? (
-                <Link
-                  href={`/templates/${template._id}/edit`}
-                  className="text-blue-600"
-                >
-                  Edit
-                </Link>
-              ) : (
-                <span className="text-red-500 text-xs">
-                  Missing ID
-                </span>
-              )}
-            </div>
-          </div>
-        ))}
+    <div className="space-y-6 max-w-[1600px] mx-auto p-4 md:p-6">
+      {/* Page Context Header Row */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b pb-5">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Products</h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage your template catalogue, update pricing, and audit distribution parameters.
+          </p>
+        </div>
+        
+        {/* Call to Action: Create New Template */}
+        <Link href="dashboard/templates/create">
+          <Button className="w-full sm:w-auto shadow-sm">
+            ➕ Add New Template
+          </Button>
+        </Link>
       </div>
+
+      {/* Global Error Notification Boundary */}
+      {error && <ErrorMessage message={error} />}
+
+      {/* Dynamic Summary Cards View */}
+      <TemplateStats />
+
+      {/* Control Filters Layer */}
+      <TemplateFilters />
+
+      {/* Dynamic Main Data Table Presentation */}
+      {loading && templates.length === 0 ? (
+        <div className="flex h-64 w-full items-center justify-center rounded-xl border border-dashed bg-white shadow-sm">
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+            <p className="text-sm font-medium text-gray-500 animate-pulse">Syncing catalog registry...</p>
+          </div>
+        </div>
+      ) : (
+        <TemplateTable templates={templates} />
+      )}
     </div>
   );
 }

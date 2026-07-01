@@ -1,117 +1,52 @@
 // src/modules/users/user.service.js
-
+const bcrypt = require("bcryptjs");
 const userRepository = require("./user.repository");
+const config = require("../../config/env");
+const { ValidationError, UnauthorizedError } = require("../../shared/errors");
 
-const ValidationError = require("../../shared/errors/ValidationError");
-const NotFoundError = require("../../shared/errors/NotFoundError");
-
-/*
-|--------------------------------------------------------------------------
-| Create User
-|--------------------------------------------------------------------------
-*/
-const createUser = async (payload) => {
-  const existingUser =
-    await userRepository.findByEmail(payload.email);
-
-  if (existingUser) {
-    throw new ValidationError("Email already exists");
-  }
-
-  return userRepository.create(payload);
-};
-
-/*
-|--------------------------------------------------------------------------
-| Get Profile
-|--------------------------------------------------------------------------
-*/
-const getProfile = async (userId) => {
-  const user = await userRepository.findById(userId);
-
-  if (!user) {
-    throw new NotFoundError("User not found");
-  }
-
-  return user;
-};
-
-/*
-|--------------------------------------------------------------------------
-| Update Profile
-|--------------------------------------------------------------------------
-*/
-const updateProfile = async (userId, payload) => {
-  const user = await userRepository.findById(userId);
-
-  if (!user) {
-    throw new NotFoundError("User not found");
-  }
-
-  if (payload.email) {
-    const existingUser =
-      await userRepository.findByEmail(payload.email);
-
-    if (
-      existingUser &&
-      existingUser._id.toString() !== userId
-    ) {
-      throw new ValidationError("Email already exists");
+class UserService {
+  async getProfile(userId) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new ValidationError("Requested user profile account record does not exist.");
     }
+    return user;
   }
 
-  return userRepository.updateById(
-    userId,
-    payload
-  );
-};
+  async updateProfile(userId, updateData) {
+    // Whitelist modifiable fields to block malicious payload injections (like forcing role = 'ADMIN')
+    const allowedUpdates = ["name", "avatar"];
+    const filteredUpdates = Object.keys(updateData)
+      .filter((key) => allowedUpdates.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = updateData[key];
+        return obj;
+      }, {});
 
-/*
-|--------------------------------------------------------------------------
-| Get All Users
-|--------------------------------------------------------------------------
-*/
-const getAllUsers = async () => {
-  return userRepository.findAll();
-};
-
-/*
-|--------------------------------------------------------------------------
-| Get User By ID
-|--------------------------------------------------------------------------
-*/
-const getUserById = async (userId) => {
-  const user = await userRepository.findById(userId);
-
-  if (!user) {
-    throw new NotFoundError("User not found");
+    const updatedUser = await userRepository.updateById(userId, filteredUpdates);
+    if (!updatedUser) {
+      throw new ValidationError("Failed to update profile record. User not found.");
+    }
+    return updatedUser;
   }
 
-  return user;
-};
+  async changePassword(userId, currentPassword, newPassword) {
+    const user = await userRepository.findById(userId, true); // true selects the password hash explicitly
+    if (!user) {
+      throw new UnauthorizedError("Authentication verification metrics failed.");
+    }
 
-/*
-|--------------------------------------------------------------------------
-| Delete User
-|--------------------------------------------------------------------------
-*/
-const deleteUser = async (userId) => {
-  const user = await userRepository.findById(userId);
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      throw new ValidationError("The current password provided is incorrect.");
+    }
 
-  if (!user) {
-    throw new NotFoundError("User not found");
+    // Encrypt fresh hash password safely using configuration metrics factor
+    user.password = await bcrypt.hash(newPassword, config.BCRYPT_SALT_ROUNDS);
+    await user.save();
+    
+    return true;
   }
+}
 
-  await userRepository.deleteById(userId);
-
-  return true;
-};
-
-module.exports = {
-  createUser,
-  getProfile,
-  updateProfile,
-  getAllUsers,
-  getUserById,
-  deleteUser,
-};
+module.exports = new UserService();

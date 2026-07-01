@@ -1,104 +1,37 @@
 // src/modules/users/user.controller.js
-
 const userService = require("./user.service");
 const userMapper = require("./user.mapper");
-const asyncHandler = require("../../common/middleware/asyncHandler");
+const apiResponse = require("../../shared/utils/apiResponse");
+const httpStatus = require("../../shared/constants/httpStatus");
 
-/*
-|--------------------------------------------------------------------------
-| Create User
-|--------------------------------------------------------------------------
-*/
-const createUser = asyncHandler(async (req, res) => {
-  const user = await userService.createUser(req.body);
-
-  return res.status(201).json({
-    success: true,
-    message: "User created successfully",
-    data: userMapper.toPublic(user),
-  });
-});
-
-/*
-|--------------------------------------------------------------------------
-| Get Logged In User Profile
-|--------------------------------------------------------------------------
-*/
-const getProfile = asyncHandler(async (req, res) => {
+const getProfile = async (req, res) => {
+  // req.user.id is injected directly by your core secure "auth" middleware validation gate
   const user = await userService.getProfile(req.user.id);
-
-  return res.status(200).json({
-    success: true,
-    data: userMapper.toPublic(user),
-  });
-});
-
-/*
-|--------------------------------------------------------------------------
-| Update Profile
-|--------------------------------------------------------------------------
-*/
-const updateProfile = asyncHandler(async (req, res) => {
-  const updatedUser = await userService.updateProfile(
-    req.user.id,
-    req.body
+  
+  return res.status(httpStatus.OK || 200).json(
+    apiResponse.success("User profile fetched successfully.", userMapper.toResponse(user))
   );
+};
 
-  return res.status(200).json({
-    success: true,
-    message: "Profile updated successfully",
-    data: userMapper.toPublic(updatedUser),
-  });
-});
+const updateProfile = async (req, res) => {
+  const updatedUser = await userService.updateProfile(req.user.id, req.body);
+  
+  return res.status(httpStatus.OK || 200).json(
+    apiResponse.success("Profile records updated successfully.", userMapper.toResponse(updatedUser))
+  );
+};
 
-/*
-|--------------------------------------------------------------------------
-| Get All Users
-|--------------------------------------------------------------------------
-*/
-const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await userService.getAllUsers();
-
-  return res.status(200).json({
-    success: true,
-    count: users.length,
-    data: userMapper.toList(users),
-  });
-});
-
-/*
-|--------------------------------------------------------------------------
-| Get User By ID
-|--------------------------------------------------------------------------
-*/
-const getUserById = asyncHandler(async (req, res) => {
-  const user = await userService.getUserById(req.params.id);
-
-  return res.status(200).json({
-    success: true,
-    data: userMapper.toPublic(user),
-  });
-});
-
-/*
-|--------------------------------------------------------------------------
-| Delete User
-|--------------------------------------------------------------------------
-*/
-const deleteUser = asyncHandler(async (req, res) => {
-  await userService.deleteUser(req.params.id);
-
-  return res.status(200).json({
-    success: true,
-    message: "User deleted successfully",
-  });
-});
+const updatePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  await userService.changePassword(req.user.id, currentPassword, newPassword);
+  
+  return res.status(httpStatus.OK || 200).json(
+    apiResponse.success("Your profile password security configuration updated successfully.")
+  );
+};
 
 module.exports = {
-  createUser,
   getProfile,
   updateProfile,
-  getAllUsers,
-  getUserById,
-  deleteUser,
+  updatePassword,
 };

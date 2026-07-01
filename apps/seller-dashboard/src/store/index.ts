@@ -1,16 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-
-import authReducer from "./slices/authSlice";
-import templateReducer from "./slices/templateSlice";
-import uiReducer from "./slices/uiSlice";
+import { authReducer } from "@/features/auth/store";
+import { templatesReducer } from "@/features/templates/store"; // Add this
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    templates: templateReducer,
-    ui: uiReducer,
+    templates: templatesReducer, // Registered!
   },
-  devTools: process.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;

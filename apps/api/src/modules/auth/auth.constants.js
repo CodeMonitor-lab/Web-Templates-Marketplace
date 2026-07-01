@@ -1,22 +1,12 @@
 // src/modules/auth/auth.constants.js
 
+const AUTH_MESSAGES = {
+  REGISTRATION_SUCCESS: "Account created successfully.",
+  LOGIN_SUCCESS: "Logged in successfully.",
+  INVALID_CREDENTIALS: "Invalid email or password credentials.",
+  EMAIL_TAKEN: "This email address is already registered.",
+};
+
 module.exports = {
-    ROLES: {
-      USER: "USER",
-      SELLER: "SELLER",
-      ADMIN: "ADMIN",
-    },
-  
-    TOKEN_TYPES: {
-      ACCESS: "ACCESS",
-      REFRESH: "REFRESH",
-    },
-  
-    AUTH_MESSAGES: {
-      REGISTER_SUCCESS: "User registered successfully",
-      LOGIN_SUCCESS: "Login successful",
-      LOGOUT_SUCCESS: "Logout successful",
-      PASSWORD_CHANGED: "Password changed successfully",
-      INVALID_CREDENTIALS: "Invalid email or password",
-    },
-  };
+  AUTH_MESSAGES,
+};

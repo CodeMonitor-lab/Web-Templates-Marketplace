@@ -1,66 +1,81 @@
-"use client";
+import Link from "next/link";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import TemplateForm from "@/components/forms/template-form";
-import api from "@/lib/api/axios";
+import Button from "@/components/ui/Button";
+import TemplateForm from "@/features/templates/components/TemplateForm";
 
-export default function EditTemplatePage() {
-  const { id } = useParams();
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
 
-  const [template, setTemplate] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let ignore = false;
-
-    const fetchTemplate = async () => {
-      try {
-        setLoading(true);
-
-        const res = await api.get(`/templates/${id}`);
-
-        const data = res?.data?.data || res?.data || null;
-
-        if (!ignore) setTemplate(data);
-      } catch (err) {
-        console.error(err);
-        if (!ignore) setTemplate(null);
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    };
-
-    // ✅ BLOCK INVALID ID BEFORE API CALL
-    if (id && typeof id === "string" && id.length === 24) {
-      fetchTemplate();
-    } else {
-      setLoading(false);
-      setTemplate(null);
-    }
-
-    return () => {
-      ignore = true;
-    };
-  }, [id]);
-
-  if (loading) return <div>Loading...</div>;
-
-  if (!template)
-    return <div>Template not found or invalid ID</div>;
+export default async function EditTemplatePage({
+  params,
+}: PageProps) {
+  const { id } = await params;
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">
-        Edit Template
-      </h1>
+    <div className="mx-auto max-w-5xl space-y-8">
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-sm text-gray-500">
+        <Link
+          href="/dashboard"
+          className="transition hover:text-black"
+        >
+          Dashboard
+        </Link>
 
-      <div className="rounded-2xl border p-6">
-        <TemplateForm
-          initialData={template}
-          isEdit={true}
-        />
+        <span>/</span>
+
+        <Link
+          href="/templates"
+          className="transition hover:text-black"
+        >
+          Templates
+        </Link>
+
+        <span>/</span>
+
+        <span className="font-medium text-black">
+          Edit Template
+        </span>
+      </nav>
+
+      {/* Header */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Edit Template
+          </h1>
+
+          <p className="mt-2 text-gray-500">
+            Update your template information and save the
+            changes.
+          </p>
+        </div>
+
+        <div className="flex gap-3">
+          <Link href={`/templates/${id}`}>
+            <Button variant="outline">
+              View Template
+            </Button>
+          </Link>
+
+          <Link href="/templates">
+            <Button variant="ghost">
+              Back
+            </Button>
+          </Link>
+        </div>
       </div>
+
+      {/* Form Card */}
+      <section className="rounded-2xl border bg-white p-6 shadow-sm">
+        <TemplateForm
+          mode="edit"
+          templateId={id}
+        />
+      </section>
     </div>
   );
 }

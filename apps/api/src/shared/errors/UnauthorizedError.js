@@ -1,14 +1,12 @@
 // src/shared/errors/UnauthorizedError.js
+const ApiError = require("./ApiError");
+const httpStatus = require("../constants/httpStatus");
 
-class UnauthorizedError extends Error {
-    constructor(message = "Unauthorized") {
-      super(message);
-  
-      this.name = "UnauthorizedError";
-      this.statusCode = 401;
-  
-      Error.captureStackTrace(this, this.constructor);
-    }
+class UnauthorizedError extends ApiError {
+  constructor(message) {
+    super(message || "Authentication credentials missing or invalid", httpStatus.UNAUTHORIZED || 401);
+    this.name = "UnauthorizedError";
   }
-  
-  module.exports = UnauthorizedError;
+}
+
+module.exports = UnauthorizedError;

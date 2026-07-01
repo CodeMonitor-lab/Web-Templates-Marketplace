@@ -1,29 +1,18 @@
+// src/routes/v1/index.js
 const express = require("express");
 const router = express.Router();
 
-/*
-|--------------------------------------------------------------------------
-| Health Check
-|--------------------------------------------------------------------------
-*/
-router.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "API V1 working successfully 🚀",
-  });
-});
-
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-*/
-const authRoutes = require("../../modules/auth/auth.routes");
-const userRoutes = require("../../modules/users/user.routes");
-const templateRoutes = require("../../modules/templates/template.routes");
+const { authRoutes } = require("../../modules/auth");
+const { userRoutes } = require("../../modules/users");
+// ⚠️ DOUBLE-CHECK THIS: Ensure templates/index.js actually exports 'templateRoutes'
+const { templateRoutes } = require("../../modules/templates"); 
 
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
-router.use("/templates", templateRoutes);
+if (templateRoutes) {
+  router.use("/templates", templateRoutes);
+} else {
+  console.error("❌ Warning: templateRoutes is undefined!");
+}
 
-module.exports = router;
+module.exports = router; // ⚠️ Make sure this line exists!

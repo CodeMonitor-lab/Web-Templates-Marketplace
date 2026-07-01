@@ -1,8 +1,12 @@
 // src/modules/users/user.mapper.js
 
-const toPublic = (user) => {
+/**
+ * Data Transformer Matrix Layer
+ * Strips security identifiers out of payloads so DB details are never exposed to clients
+ */
+const toResponse = (user) => {
   if (!user) return null;
-
+  
   return {
     id: user._id,
     name: user.name,
@@ -15,10 +19,6 @@ const toPublic = (user) => {
   };
 };
 
-const toList = (users = []) =>
-  users.map(toPublic);
-
 module.exports = {
-  toPublic,
-  toList,
+  toResponse,
 };

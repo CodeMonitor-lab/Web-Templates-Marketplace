@@ -1,36 +1,27 @@
 // src/common/middleware/rateLimiter.js
-
 const rateLimit = require("express-rate-limit");
+const httpStatus = require("../../shared/constants/httpStatus");
 
-const isProduction = process.env.NODE_ENV === "production";
+const createLimiter = (windowMs, maxRequests, customMessage) => {
+  return rateLimit({
+    windowMs: windowMs || 15 * 60 * 1000, // 15 minutes
+    max: maxRequests || 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+      success: false,
+      message: customMessage || "Too many requests from this IP. Please try again later.",
+    },
+    // Fallback to 429 if httpStatus object lacks standard naming conventions
+    statusCode: httpStatus.TOO_MANY_REQUESTS || httpStatus.StatusCodes?.TOO_MANY_REQUESTS || 429,
+  });
+};
 
-const rateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+const globalLimiter = createLimiter(15 * 60 * 1000, 300, "Global traffic limits reached.");
+const authLimiter = createLimiter(10 * 60 * 1000, 20, "Too many authentication attempts.");
 
-  // Different limits for dev & prod
-  max: isProduction ? 100 : 1000,
-
-  // Better headers
-  standardHeaders: true,
-  legacyHeaders: false,
-
-  // Skip localhost in development
-  skip: (req) => {
-    if (!isProduction) {
-      return (
-        req.ip === "::1" ||
-        req.ip === "127.0.0.1" ||
-        req.ip === "::ffff:127.0.0.1"
-      );
-    }
-
-    return false;
-  },
-
-  message: {
-    success: false,
-    message: "Too many requests, please try again later",
-  },
-});
-
-module.exports = rateLimiter;
+// CRITICAL: Ensure these match the destructured names exactly!
+module.exports = {
+  globalLimiter,
+  authLimiter,
+};

@@ -7,7 +7,14 @@ const helmet = require("helmet");
 
 const config = require("./config/env");
 
-const rateLimiter = require("./common/middleware/rateLimiter");
+// Explicitly pull globalLimiter. Added a fallback to log if your import tree breaks.
+const rateLimiterModule = require("./common/middleware/rateLimiter");
+const globalLimiter = rateLimiterModule?.globalLimiter;
+
+if (!globalLimiter) {
+  console.error("🚨 FATAL: globalLimiter is undefined! Check your rateLimiter.js exports.");
+}
+
 const routes = require("./routes/v1");
 const errorHandler = require("./common/middleware/errorHandler");
 const logger = require("./shared/logger/logger");
@@ -16,69 +23,57 @@ const { swaggerUi, swaggerSpec } = require("./docs/swagger");
 
 const app = express();
 
-
-
 /*
 |--------------------------------------------------------------------------
-| Trust Proxy
+| Trust Proxy Configuration
 |--------------------------------------------------------------------------
 */
 app.set("trust proxy", 1);
 
 /*
 |--------------------------------------------------------------------------
-| Security
+| HTTP Security Headers
 |--------------------------------------------------------------------------
 */
 app.use(helmet());
 
 /*
 |--------------------------------------------------------------------------
-| CORS
+| Cross-Origin Resource Sharing (CORS)
 |--------------------------------------------------------------------------
 */
 app.use(
   cors({
     origin: config.CLIENT_URL,
     credentials: true,
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "PATCH",
-      "DELETE",
-      "OPTIONS",
-    ],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-    ],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
 /*
 |--------------------------------------------------------------------------
-| Rate Limiting
+| Global Rate Limiting Gatekeeper
 |--------------------------------------------------------------------------
 */
-app.use(rateLimiter);
+if (globalLimiter) {
+  app.use(globalLimiter);
+} else {
+  // Safe fallback to prevent Express from crashing if the module exports are out of sync
+  app.use((req, res, next) => next()); 
+}
 
 /*
 |--------------------------------------------------------------------------
-| Body Parsing
+| Request Body Parsing Middlewares
 |--------------------------------------------------------------------------
 */
 app.use(express.json());
-
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+app.use(express.urlencoded({ extended: true }));
 
 /*
 |--------------------------------------------------------------------------
-| Logger
+| Traffic Logging Matrix
 |--------------------------------------------------------------------------
 */
 app.use(
@@ -91,20 +86,16 @@ app.use(
 
 /*
 |--------------------------------------------------------------------------
-| Swagger Docs (Development Only)
+| Swagger Interface Endpoint Documentation (Development Mode)
 |--------------------------------------------------------------------------
 */
 if (config.NODE_ENV !== "production") {
-  app.use(
-    "/api-docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerSpec)
-  );
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
 /*
 |--------------------------------------------------------------------------
-| Health Check
+| Root API Health Check Gateway
 |--------------------------------------------------------------------------
 */
 app.get("/", (req, res) => {
@@ -117,19 +108,18 @@ app.get("/", (req, res) => {
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| Primary Module Routing Matrix Tree
 |--------------------------------------------------------------------------
 */
 app.use("/api/v1", routes);
 
 /*
 |--------------------------------------------------------------------------
-| 404 Handler
+| Resource Not Found (404 Fallback Boundary)
 |--------------------------------------------------------------------------
 */
 app.use((req, res) => {
   logger.warn(`404 Route Not Found: ${req.originalUrl}`);
-
   return res.status(404).json({
     success: false,
     message: "Route not found",
@@ -138,7 +128,7 @@ app.use((req, res) => {
 
 /*
 |--------------------------------------------------------------------------
-| Global Error Handler
+| Global System Exception Boundary Interceptor Middleware
 |--------------------------------------------------------------------------
 */
 app.use(errorHandler);

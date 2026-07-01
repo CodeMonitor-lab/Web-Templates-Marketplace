@@ -1,11 +1,11 @@
 // src/shared/errors/ApiError.js
 
 class ApiError extends Error {
-  constructor(statusCode, message) {
+  constructor(message, statusCode) {
     super(message);
-
-    this.name = "ApiError";
     this.statusCode = statusCode;
+    this.status = `${statusCode}`.startsWith("4") ? "fail" : "error";
+    this.isOperational = true; // Helps identify trusted operational errors vs unexpected native bugs
 
     Error.captureStackTrace(this, this.constructor);
   }

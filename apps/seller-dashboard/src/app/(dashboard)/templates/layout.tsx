@@ -1,42 +1,54 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
+
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+
+interface TemplatesLayoutProps {
+  children: ReactNode;
+}
 
 export default function TemplatesLayout({
   children,
-}: {
-  children: ReactNode;
-}) {
+}: TemplatesLayoutProps) {
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <div className="flex flex-col gap-3 border-b pb-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Templates</h1>
-          <p className="text-sm text-gray-500">
-            Manage your marketplace templates
-          </p>
-        </div>
+      {/* Toolbar */}
+      <div className="rounded-2xl border bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          {/* Left Actions */}
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/templates">
+              <Button variant="outline">
+                All Templates
+              </Button>
+            </Link>
 
-        {/* Actions */}
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/templates"
-            className="rounded-lg border px-4 py-2 text-sm transition hover:bg-gray-100"
-          >
-            All
-          </Link>
+            <Link href="/templates/create">
+              <Button>
+                + Create Template
+              </Button>
+            </Link>
+          </div>
 
-          <Link
-            href="/templates/create"
-            className="rounded-lg bg-black px-4 py-2 text-sm text-white transition hover:bg-gray-800"
-          >
-            + Create
-          </Link>
+          {/* Right Actions */}
+          <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto lg:min-w-[450px]">
+            <Input
+              placeholder="Search templates..."
+              className="flex-1"
+            />
+
+            <Button variant="outline">
+              Filter
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* Page Content */}
-      <div className="min-h-[70vh]">{children}</div>
+      {/* Content */}
+      <main className="min-h-[70vh]">
+        {children}
+      </main>
     </div>
   );
 }

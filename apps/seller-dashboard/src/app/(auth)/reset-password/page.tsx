@@ -1,19 +1,5 @@
-import ResetPasswordForm from "@/components/forms/auth/reset-password-form";
+import ResetPasswordForm from "@/features/auth/components/ResetPasswordForm";
 
 export default function ResetPasswordPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center px-6">
-      <div className="w-full max-w-md rounded-2xl border bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-bold">
-          Reset Password
-        </h1>
-
-        <p className="mt-2 text-sm text-gray-500">
-          Enter your new password below.
-        </p>
-
-        <ResetPasswordForm />
-      </div>
-    </div>
-  );
+  return <ResetPasswordForm />;
 }
